@@ -167,7 +167,7 @@ describe("panels and explorer", () => {
   it("ingest pipeline backend charts render", () => {
     render(<IngestPanel />);
     expect(document.body.innerHTML.length).toBeGreaterThan(0);
-    render(<PipelineDiagram />);
+    render(<PipelineDiagram active="ingesting" />);
     expect(document.body.innerHTML).toContain("Ingest");
     render(<BackendIndicator />);
     expect(screen.getByTestId("backend-indicator")).toBeInTheDocument();
