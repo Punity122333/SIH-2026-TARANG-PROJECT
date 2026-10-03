@@ -23,7 +23,7 @@ describe("MetricCard", () => {
 });
 describe("DepthSlider", () => {
   it("spans 0 to 14 and labels depth", () => {
-    const fn = (_v: number) => undefined;
+    const fn = () => undefined;
     const { rerender } = render(<DepthSlider index={3} onChange={fn} />);
     const slider = screen.getByLabelText("Depth slice") as HTMLInputElement;
     expect(slider.min).toBe("0");
