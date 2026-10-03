@@ -3,7 +3,6 @@ import Plot from "react-plotly.js";
 import { useSession } from "@/store/session";
 import { profileAt } from "@/engine/demo/engine";
 import { CHART_THEME } from "@/lib/theme";
-import { DemoBadge } from "@/components/badges";
 export function TSChart() {
   const s = useSession();
   const [band, setBand] = useState("all");
@@ -19,9 +18,8 @@ export function TSChart() {
   }).map((x) => x.i);
   return (
     <div className="strata-card p-3" data-testid="ts-chart">
-      <div className="flex items-center justify-between gap-2">
-        <div className="text-[11px] uppercase tracking-widest text-slate-300/70">T–S diagram</div>
-        <DemoBadge compact />
+      <div className="flex min-w-0 flex-wrap items-center justify-between gap-x-2 gap-y-1">
+        <div className="min-w-0 flex-1 truncate text-[11px] uppercase tracking-widest text-slate-300/70">T–S diagram</div>
       </div>
       <div className="mt-1 flex gap-1 text-[11px]">
         {(["all", "surface", "thermocline", "deep"] as const).map((b) => (

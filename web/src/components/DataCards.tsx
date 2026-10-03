@@ -1,19 +1,24 @@
 import { SOURCES } from "@/lib/config";
 import { useSession } from "@/store/session";
+import { inputSourceText } from "@/lib/provenance";
+const CARD_INPUT: Record<string, "sst" | "sss" | "ssh" | "currents" | "winds"> = { OSTIA: "sst", "SMAP / SMOS": "sss", DUACS: "ssh", OSCAR: "currents", CCMP: "winds" };
 export function DataSourceCard({ id }: { id: string }) {
   const s = useSession();
   const meta = SOURCES.find((x) => x.id === id);
   if (!meta) return null;
   const live = s.result?.ingest.find((g) => g.id === id.split(" ")[0]);
+  const key = CARD_INPUT[id];
+  const src = s.result && key ? inputSourceText(s.result, key) : null;
   return (
-    <div className="strata-card p-3" data-testid={"source-" + id}>
-      <div className="mono text-sm text-cyan-100">{meta.id}</div>
+    <div className="strata-card min-w-0 p-3" data-testid={"source-" + id}>
+      <div className="mono truncate text-sm text-cyan-100">{meta.id}</div>
       <dl className="mt-1 space-y-0.5 text-xs text-slate-200">
         <div className="flex justify-between"><dt className="text-slate-300/60">Variable</dt><dd>{meta.variable}</dd></div>
         <div className="flex justify-between"><dt className="text-slate-300/60">Spatial</dt><dd className="mono">{meta.resolution}</dd></div>
         <div className="flex justify-between"><dt className="text-slate-300/60">Temporal</dt><dd>{meta.id === id && s.result ? "Daily 0.25° harmonized" : "Not specified"}</dd></div>
         <div className="flex justify-between"><dt className="text-slate-300/60">Org</dt><dd>{meta.org}</dd></div>
         <div className="flex justify-between"><dt className="text-slate-300/60">Role</dt><dd className="text-right">{meta.role}</dd></div>
+        <div className="flex justify-between gap-2"><dt className="shrink-0 text-slate-300/60">Source</dt><dd className="mono min-w-0 truncate text-right">{src || "Not specified"}</dd></div>
         <div className="flex justify-between"><dt className="text-slate-300/60">Ingest</dt><dd className="mono">{live ? live.missingPct.toFixed(1) + "% missing" : "No run yet"}</dd></div>
       </dl>
     </div>

@@ -9,11 +9,16 @@ import { DemoBadge, OfflineBadge } from "@/components/badges";
 import { useSession } from "@/store/session";
 import { DEPTH_LEVELS } from "@/lib/config";
 describe("MetricCard", () => {
-  it("formats numbers and shows DEMO badge", () => {
+  it("formats numbers with no badge by default", () => {
     render(<MetricCard label="RMSE" value={1.23456} unit="C" />);
     expect(screen.getByTestId("metric-RMSE")).toBeInTheDocument();
     expect(screen.getByTestId("metric-RMSE").textContent).toContain("1.23");
-    expect(screen.getAllByTestId("demo-badge").length).toBeGreaterThan(0);
+    expect(screen.queryByTestId("demo-badge")).toBeNull();
+    expect(screen.queryByTestId("weak-badge")).toBeNull();
+  });
+  it("shows weak badge only when passed", () => {
+    render(<MetricCard label="RMSE" value={1.23} unit="C" badge="SIMULATED" />);
+    expect(screen.getByTestId("weak-badge").textContent).toContain("SIMULATED");
   });
   it("passes strings through and shows hint", () => {
     render(<MetricCard label="State" value="Not specified" hint="hello-hint" />);

@@ -66,8 +66,8 @@ export function Ocean3DView() {
   }
   return (
     <div className="strata-card p-3" data-testid="ocean-3d">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="text-[11px] uppercase tracking-widest text-slate-300/70">3D ocean block · deck.gl voxels · DEMO / SIMULATED</div>
+      <div className="flex min-w-0 flex-wrap items-center justify-between gap-2">
+        <div className="min-w-0 flex-1 truncate text-[11px] uppercase tracking-widest text-slate-300/70">3D ocean block · deck.gl voxels</div>
         <label className="flex items-center gap-1 text-[11px]">
           <input type="checkbox" checked={showTruth} onChange={(e) => setShowTruth(e.target.checked)} />
           Ground-truth demo toggle

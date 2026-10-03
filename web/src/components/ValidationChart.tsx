@@ -1,7 +1,7 @@
 import Plot from "react-plotly.js";
 import { useSession } from "@/store/session";
 import { CHART_THEME } from "@/lib/theme";
-import { DemoBadge } from "@/components/badges";
+import { metricRefShort } from "@/lib/provenance";
 export function ValidationChart() {
   const s = useSession();
   const r = s.result;
@@ -13,9 +13,8 @@ export function ValidationChart() {
   const err = recon.map((v, i) => v - sel.truth[i]);
   return (
     <div className="strata-card p-3" data-testid="validation-chart">
-      <div className="flex items-center justify-between">
-        <div className="text-[11px] uppercase tracking-widest text-slate-300/70">ARGO {sel.id} vs STRATA · error by depth</div>
-        <DemoBadge compact />
+      <div className="flex min-w-0 flex-wrap items-center justify-between gap-x-2 gap-y-1">
+        <div className="min-w-0 flex-1 truncate text-[11px] uppercase tracking-widest text-slate-300/70">ARGO {sel.id} vs STRATA · error by depth · {metricRefShort(r)}</div>
       </div>
       <div className="mt-1 flex gap-1 text-[11px]">
         {r.argo.map((a) => (

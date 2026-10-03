@@ -4,19 +4,21 @@ import { MetricCard } from "@/components/MetricCard";
 import { ErrorBudgetTable } from "@/components/DataCards";
 import { MapView } from "@/components/Map";
 import { EmptyState } from "@/components/badges";
+import { metricRefShort } from "@/lib/provenance";
 export function ValidationPage() {
   const s = useSession();
   const r = s.result;
   if (!r) return <div data-testid="validation-page"><EmptyState label="No validation profiles yet. Run reconstruction first." /></div>;
+  const refNote = r.prov.argo.synthetic ? "ARGO-like synthetic profiles (demo). STRATA never trains on ARGO. Metrics " + metricRefShort(r) + "." : "Independent held-out ARGO validation. STRATA never trains on it.";
   return (
     <div className="space-y-3" data-testid="validation-page">
-      <div className="strata-card p-2 text-[11px] text-slate-300/70">ARGO is independent held-out validation. STRATA never trains on it. All metrics computed from {r.engineId} {r.provenance} arrays.</div>
+      <div className="strata-card p-2 text-[11px] text-slate-300/70">{refNote}</div>
       {r ? (
         <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
-          <MetricCard label="RMSE" value={r.metrics.rmse} unit="C" />
-          <MetricCard label="Bias" value={r.metrics.bias} unit="C" />
-          <MetricCard label="R2" value={r.metrics.r2} unit="" />
-          <MetricCard label="Thermo Err" value={r.metrics.thermoErr} unit="m" />
+          <MetricCard label="RMSE" value={r.metrics.rmse} unit="C" hint={metricRefShort(r)} />
+          <MetricCard label="Bias" value={r.metrics.bias} unit="C" hint={metricRefShort(r)} />
+          <MetricCard label="R2" value={r.metrics.r2} unit="" hint={metricRefShort(r)} />
+          <MetricCard label="Thermo Err" value={r.metrics.thermoErr} unit="m" hint={metricRefShort(r)} />
         </div>
       ) : null}
       <div className="grid gap-3 lg:grid-cols-2">

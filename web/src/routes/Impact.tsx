@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useSession } from "@/store/session";
 import { profileAt } from "@/engine/demo/engine";
-import { DemoBadge } from "@/components/badges";
 import { profileCsv, fieldCsv, fieldNetcdf, download } from "@/lib/export";
+import { provenanceLine, showUntrainedNotice } from "@/lib/provenance";
 export function mackenzie(temp: number, sal: number, depth: number) {
   return 1448.96 + 4.591 * temp - 0.05304 * temp * temp + 0.0002374 * temp * temp * temp + 1.34 * (sal - 35) + 0.0163 * depth + 1.675e-7 * depth * depth - 0.01025 * temp * (sal - 35) - 7.139e-13 * temp * depth * depth * depth;
 }
@@ -44,12 +44,12 @@ export function ImpactPage() {
   }
   return (
     <div className="space-y-3" data-testid="impact-page">
+      {r ? <div className="strata-card p-2 text-[11px] text-slate-300/70">{provenanceLine(r)}{showUntrainedNotice(r) ? " · outputs are not scientific results" : ""}</div> : null}
       <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
         {cards.map((c) => (
-          <div key={c.title} className="strata-card p-3">
-            <div className="flex items-center justify-between gap-2">
-              <div className="text-sm text-cyan-100">{c.title}</div>
-              <DemoBadge compact />
+          <div key={c.title} className="strata-card min-w-0 p-3">
+            <div className="flex min-w-0 flex-wrap items-center justify-between gap-x-2 gap-y-1">
+              <div className="min-w-0 flex-1 truncate text-sm text-cyan-100">{c.title}</div>
             </div>
             <div className="mt-1 text-xs text-slate-200">{c.body}</div>
             <div className="mono mt-1 text-[11px] text-cyan-100">{c.val}</div>

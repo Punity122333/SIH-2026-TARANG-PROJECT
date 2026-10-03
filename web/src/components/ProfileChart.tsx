@@ -2,7 +2,7 @@ import Plot from "react-plotly.js";
 import { useSession } from "@/store/session";
 import { profileAt } from "@/engine/demo/engine";
 import { CHART_THEME } from "@/lib/theme";
-import { DemoBadge } from "@/components/badges";
+import { metricRefShort } from "@/lib/provenance";
 export function ProfileChart() {
   const s = useSession();
   const r = s.result;
@@ -16,9 +16,8 @@ export function ProfileChart() {
   const hover = depths.map((d, i) => "depth " + d + " m<br>temp " + (Number.isFinite(recon[i]) ? recon[i].toFixed(2) : "--") + " C<br>error " + (Number.isFinite(err[i]) ? err[i].toFixed(2) : "--") + " C");
   return (
     <div className="strata-card p-3" data-testid="profile-chart" aria-label="Vertical temperature profile chart">
-      <div className="flex items-center justify-between">
-        <div className="text-[11px] uppercase tracking-widest text-slate-300/70">Vertical profile · depth inverted · {r.provenance}</div>
-        <DemoBadge compact />
+      <div className="flex min-w-0 flex-wrap items-center justify-between gap-x-2 gap-y-1">
+        <div className="min-w-0 flex-1 truncate text-[11px] uppercase tracking-widest text-slate-300/70">Vertical profile · depth inverted · {metricRefShort(r)}</div>
       </div>
       <Plot
         data={[

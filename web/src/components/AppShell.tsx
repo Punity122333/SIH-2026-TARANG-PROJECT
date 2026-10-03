@@ -4,7 +4,8 @@ import { useMachine } from "@xstate/react";
 import { pipelineMachine, PIPE_LABELS, PIPE_STEPS } from "@/store/machine";
 import { useSession } from "@/store/session";
 import { ReconstructionControls } from "@/components/ReconstructionControls";
-import { DemoBadge, OfflineBadge, ErrorState } from "@/components/badges";
+import { StatusChip, OfflineBadge, ErrorState } from "@/components/badges";
+import { statusChip } from "@/lib/provenance";
 import { BackendIndicator } from "@/components/BackendIndicator";
 import { useOnline, syncUrl } from "@/lib/offline";
 import { REGIONS } from "@/lib/config";
@@ -66,11 +67,13 @@ export function AppShell() {
           <div className="flex items-center gap-2">
             <span className="flex h-7 w-7 items-center justify-center rounded bg-cyan-400/15 text-cyan-200"><Waves size={16} /></span>
             <div>
-              <div className="flex items-center gap-2">
+              <div className="flex min-w-0 flex-wrap items-center gap-2">
                 <span className="mono text-base font-bold tracking-widest text-cyan-100">STRATA</span>
-                <DemoBadge />
+                {(() => {
+                  const chip = statusChip(s.result, s.engine, s.dataMode);
+                  return <StatusChip text={chip.text} tone={chip.tone} />;
+                })()}
                 <OfflineBadge online={online} />
-                {!online ? null : <span className="mono text-[10px] text-emerald-200">DEMO / SIMULATED · untrained weights</span>}
                 <BackendIndicator />
               </div>
               <div className="text-[11px] text-slate-300/70">Physics-Informed Subsurface Ocean Temperature Reconstruction</div>

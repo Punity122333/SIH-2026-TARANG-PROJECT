@@ -20,9 +20,9 @@ export function ReconstructionControls() {
           ))}
         </select>
         <div id="rc-engine-help" className="mono mt-1 text-[10px] text-slate-300/60">
-          {s.engine === "demo" ? "DEMO / SIMULATED · synthetic data · untrained weights" : null}
-          {s.engine === "onnx" ? (s.onnxAvailable ? "ONNX weights are untrained. Results are DEMO / SIMULATED." : s.onnxReason) : null}
-          {s.engine === "remote" ? (!online ? "Remote is disabled while offline. Use Demo or ONNX." : "Remote runs the Python package server-side. Flagged remote / synthetic data / untrained weights until trained weights exist.") : null}
+          {s.engine === "demo" ? "Demo · synthetic inputs · untrained model" : null}
+          {s.engine === "onnx" ? (s.onnxAvailable ? "ONNX · synthetic inputs · untrained weights" : s.onnxReason) : null}
+          {s.engine === "remote" ? (!online ? "Remote is disabled while offline. Use Demo or ONNX." : "Remote runs the Python package server-side · untrained model") : null}
         </div>
       </div>
       <div>
@@ -114,7 +114,7 @@ export function ReconstructionControls() {
         </select>
       </div>
       <div className="rounded border border-slate-500/20 p-2 text-[11px] text-slate-300/70" data-testid="datamode-note">
-        Data mode: {s.dataMode} · Engine: {s.engine} · {s.engine === "demo" ? "DEMO / SIMULATED active" : s.engine === "onnx" ? (s.onnxAvailable ? "ONNX untrained weights" : "ONNX disabled, no model file") : "Remote backend " + s.backend.state}
+        Data mode: {s.dataMode} · Engine: {s.engine} · {s.engine === "demo" ? "synthetic inputs" : s.engine === "onnx" ? (s.onnxAvailable ? "untrained ONNX weights" : "ONNX disabled, no model file") : "Remote backend " + s.backend.state}
       </div>
     </div>
   );
