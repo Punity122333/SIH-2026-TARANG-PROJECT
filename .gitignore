@@ -1,0 +1,12 @@
+.env
+node_modules/
+web/dist/
+web/playwright-report/
+web/test-results/
+__pycache__/
+artifacts/
+.venv/
+coverage/
+dist/
+playwright-report/
+test-results/

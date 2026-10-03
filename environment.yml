@@ -1,0 +1,31 @@
+name: strata
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - numpy
+  - scipy
+  - xarray
+  - netcdf4
+  - h5netcdf
+  - zarr
+  - dask
+  - scikit-learn
+  - pytorch
+  - torchvision
+  - lightning
+  - xesmf
+  - esmf
+  - pip
+  - pip:
+    - onnx
+    - fastapi
+    - uvicorn
+    - pydantic>=2
+    - copernicusmarine
+    - earthaccess
+    - argopy
+    - wandb
+    - pytest
+    - ruff
+    - mypy

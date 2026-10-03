@@ -1,0 +1,42 @@
+@import "tailwindcss";
+@import "@fontsource/inter";
+@import "@fontsource/jetbrains-mono";
+:root {
+  --strata-bg: #040b18;
+  --strata-panel: #061224;
+  --strata-line: rgba(120, 180, 255, 0.16);
+  --strata-text: #cfe6ff;
+  --strata-dim: #7fa3c8;
+  --strata-accent: #22d3ee;
+}
+html, body, #root {
+  height: 100%;
+}
+body {
+  background: var(--strata-bg);
+  color: var(--strata-text);
+  font-family: Inter, system-ui, sans-serif;
+  margin: 0;
+}
+.mono {
+  font-family: "JetBrains Mono", monospace;
+}
+.strata-card {
+  background: linear-gradient(180deg, rgba(10, 28, 54, 0.92), rgba(5, 15, 32, 0.94));
+  border: 1px solid var(--strata-line);
+  border-radius: 10px;
+}
+.strata-grid-bg {
+  background-image: linear-gradient(rgba(120,180,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(120,180,255,0.05) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+.strata-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+.strata-scroll::-webkit-scrollbar-thumb { background: rgba(34,211,238,0.3); border-radius: 4px; }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 2px solid #22d3ee;
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none; transition: none; }
+}
+.maplibregl-canvas { outline: none; }

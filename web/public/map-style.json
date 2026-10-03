@@ -1,0 +1,30 @@
+{
+  "version": 8,
+  "name": "strata-offline",
+  "sources": {
+    "coast": {
+      "type": "vector",
+      "url": "pmtiles:///tiles/coastline.pmtiles"
+    }
+  },
+  "layers": [
+    {
+      "id": "bg",
+      "type": "background",
+      "paint": {
+        "background-color": "#061224"
+      }
+    },
+    {
+      "id": "coastline",
+      "type": "line",
+      "source": "coast",
+      "source-layer": "coastline",
+      "paint": {
+        "line-color": "#22d3ee",
+        "line-width": 1,
+        "line-opacity": 0.55
+      }
+    }
+  ]
+}

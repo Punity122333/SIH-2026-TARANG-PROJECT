@@ -1,0 +1,16 @@
+node_modules
+web/node_modules
+web/dist
+web/playwright-report
+web/test-results
+.venv
+__pycache__
+.pytest_cache
+.mypy_cache
+.ruff_cache
+artifacts
+coverage
+dist
+playwright-report
+test-results
+.env
