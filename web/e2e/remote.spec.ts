@@ -20,8 +20,9 @@ test("remote cancel recovers cleanly", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByTestId("dashboard")).toBeVisible({ timeout: 30000 });
   await page.locator("#rc-engine").selectOption("remote");
-  await page.getByTestId("run-btn").click();
-  await page.waitForTimeout(800);
+  const runPromise = page.getByTestId("run-btn").click();
+  await runPromise;
+  await expect(page.getByTestId("cancel-btn").or(page.getByTestId("run-btn"))).toBeVisible({ timeout: 15000 });
   const cancel = page.getByTestId("cancel-btn");
   if (await cancel.isVisible()) {
     await cancel.click();
@@ -45,7 +46,7 @@ test("demo and remote share shapes and labels", async ({ page }) => {
   await expect(page.getByTestId("dashboard")).toBeVisible({ timeout: 30000 });
   await page.locator("#rc-engine").selectOption("demo");
   await page.getByTestId("run-btn").click();
-  await page.waitForTimeout(2000);
+  await expect.poll(async () => (await page.getByTestId("dashboard").innerText()).length, { timeout: 30000 }).toBeGreaterThan(100);
   const demoAll = await page.getByTestId("dashboard").innerText();
   await page.locator("#rc-engine").selectOption("remote");
   await page.getByTestId("run-btn").click();

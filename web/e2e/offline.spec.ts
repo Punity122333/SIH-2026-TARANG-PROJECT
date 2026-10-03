@@ -3,10 +3,10 @@ test("offline badge demo onnx work remote disabled", async ({ page, context }) =
   await page.goto("/");
   await expect(page.getByTestId("dashboard")).toBeVisible({ timeout: 30000 });
   await expect(page.getByTestId("map-view")).toBeVisible({ timeout: 30000 });
-  await page.waitForTimeout(4000);
+  await expect(page.getByTestId("recon-panel")).toBeVisible({ timeout: 30000 });
   await page.reload();
   await expect(page.getByTestId("dashboard")).toBeVisible({ timeout: 30000 });
-  await page.waitForTimeout(3000);
+  await expect(page.getByTestId("recon-panel")).toBeVisible({ timeout: 30000 });
   await context.setOffline(true);
   await page.goto("/", { waitUntil: "domcontentloaded" }).catch(() => undefined);
   await expect(page.locator("text=OFFLINE MODE").first()).toBeVisible({ timeout: 30000 });

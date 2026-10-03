@@ -3,11 +3,12 @@ import fs from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 const ROOT = new URL("../", import.meta.url).pathname;
-const SKIP_DIRS = new Set(["node_modules", ".git", "dist", "build", ".venv", "__pycache__", "coverage", ".pytest_cache"]);
+const SKIP_DIRS = new Set(["node_modules", ".git", "dist", "build", ".venv", "__pycache__", "coverage", ".pytest_cache", ".mypy_cache", ".ruff_cache", "htmlcov", "test-results", "playwright-report"]);
 const JS_EXTS = new Set([".ts", ".tsx", ".js", ".mjs", ".cjs", ".jsx"]);
 const CSS_EXTS = new Set([".css"]);
 const PY_EXTS = new Set([".py"]);
 const HTML_EXTS = new Set([".html"]);
+const MD_EXTS = new Set([".md"]);
 const HASH_EXTS = new Set([".yml", ".yaml", ".toml", ".sh", ".env"]);
 function listFiles(dir, out) {
   const entries = fs.readdirSync(dir, { withFileTypes: true });
@@ -264,6 +265,10 @@ for (const f of all) {
     const h = scanPythonFile(f);
     if (h.length > 0) failures.push({ file: rel, hits: h });
   } else if (HTML_EXTS.has(ext)) {
+    const text = fs.readFileSync(f, "utf-8");
+    const h = scanHtml(text);
+    if (h.length > 0) failures.push({ file: rel, hits: h });
+  } else if (MD_EXTS.has(ext)) {
     const text = fs.readFileSync(f, "utf-8");
     const h = scanHtml(text);
     if (h.length > 0) failures.push({ file: rel, hits: h });

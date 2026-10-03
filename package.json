@@ -11,11 +11,15 @@
     "dev:api": ".venv/bin/python -m uvicorn api.main:app --reload --port 8000 --app-dir python",
     "build": "npm --prefix web run build",
     "preview": "npm --prefix web run preview",
-    "check": "npm --prefix web run check && .venv/bin/python -m pytest python/tests -q && .venv/bin/python -m ruff check python && .venv/bin/python -m mypy --config-file python/pyproject.toml python/strata python/api && node scripts/check-no-comments.mjs",
+    "check": "npm --prefix web run check && PYTHONPATH=python .venv/bin/python -m pytest python/tests -q && .venv/bin/python -m ruff check python && .venv/bin/python -m mypy --config-file python/pyproject.toml python/strata python/api && node scripts/check-no-comments.mjs",
     "check:no-comments": "node scripts/check-no-comments.mjs",
+    "check:coverage": "node scripts/check-coverage.mjs",
     "api:dev": ".venv/bin/python -m uvicorn api.main:app --reload --port 8000 --app-dir python",
-    "test:py": ".venv/bin/python -m pytest python/tests -q",
-    "test:e2e": "npm --prefix web run test:e2e"
+    "test:unit": "npm --prefix web run test -- --run --coverage && node scripts/check-coverage.mjs",
+    "test:py": "PYTHONPATH=python .venv/bin/python -m pytest python/tests -q",
+    "test:contract": "npm --prefix web run test -- --run src/engine/contract.test.ts src/engine/golden.test.ts && PYTHONPATH=python .venv/bin/python -m pytest python/tests/test_contract_golden.py python/tests/test_api.py -q -o addopts=''",
+    "test:e2e": "npm --prefix web run test:e2e",
+    "test:all": "npm --prefix web run test -- --run --coverage && node scripts/check-coverage.mjs && PYTHONPATH=python .venv/bin/python -m pytest python/tests -q && npm --prefix web run build && npm --prefix web run test:e2e"
   },
   "workspaces": [
     "web"

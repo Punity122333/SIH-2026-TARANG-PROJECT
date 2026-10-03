@@ -32,3 +32,5 @@ test-results/
 .mypy_cache/
 htmlcov/
 .coverage
+coverage.json
+web/coverage/
