@@ -1,6 +1,7 @@
 import { DEPTH_LEVELS, GRID_H, GRID_W, REGIONS } from "@/lib/config";
 import type { EngineInput, RunResult, ArgoFloat, Metrics } from "@/engine/types";
 import { hashSeed, mulberry32, dayOfYear, makeNoise, makeEddies, eddyField } from "@/engine/demo/prng";
+import { demoProvenance } from "@/lib/provenance";
 export function regionBounds(region: string) {
   const f = REGIONS.find((r) => r.id === region);
   if (f) return f;
@@ -306,6 +307,7 @@ export function runDemoSync(input: EngineInput): RunResult {
     timingMs: t1 - t0,
     tes: null,
     provenance: "demo / synthetic data / untrained weights",
+    prov: demoProvenance(),
     synthetic: true,
     untrained: true,
     engineId: "demo",

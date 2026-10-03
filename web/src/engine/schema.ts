@@ -1,4 +1,5 @@
 import type { RunResult, EngineInput, ArgoFloat } from "@/engine/types";
+import { remoteProvenance } from "@/lib/provenance";
 export interface RemotePayload {
   region: string;
   date: string;
@@ -93,6 +94,7 @@ export function remoteToResult(p: RemotePayload, input: EngineInput): RunResult 
     timingMs: p.timingMs,
     tes: null,
     provenance: p.provenance,
+    prov: remoteProvenance(p as unknown as { observed?: unknown; sourceStatus?: unknown }),
     synthetic: p.synthetic,
     untrained: p.untrained,
     engineId: "remote",

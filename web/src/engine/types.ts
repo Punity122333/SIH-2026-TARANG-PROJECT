@@ -22,6 +22,31 @@ export interface EngineInput {
   gapMethod: string;
   dataMode?: string;
 }
+export interface InputProvenance {
+  synthetic: boolean;
+  source: string;
+}
+export interface Provenance {
+  inputs: {
+    sst: InputProvenance;
+    sss: InputProvenance;
+    ssh: InputProvenance;
+    currents: InputProvenance;
+    winds: InputProvenance;
+  };
+  argo: {
+    synthetic: boolean;
+    source: string;
+  };
+  model: {
+    trained: boolean;
+    label: string;
+  };
+  metricRef: {
+    heldOutArgo: boolean;
+    label: string;
+  };
+}
 export interface ArgoFloat {
   id: string;
   lat: number;
@@ -71,6 +96,7 @@ export interface RunResult {
   timingMs: number;
   tes: { t: number[]; s: number[] } | null;
   provenance: string;
+  prov: Provenance;
   synthetic: boolean;
   untrained: boolean;
   engineId: string;

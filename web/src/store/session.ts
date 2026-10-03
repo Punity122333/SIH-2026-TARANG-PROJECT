@@ -184,7 +184,8 @@ export const useSession = create<SessionState>((set, get) => ({
         if (onStage) onStage("embedding");
         const { runDemoSync: demoSync } = await import("@/engine/demo/engine");
         out = demoSync(s.inputOf());
-        out = { ...out, provenance: "onnx / synthetic data / untrained weights", synthetic: true, untrained: true, engineId: "onnx" };
+        const { onnxProvenance } = await import("@/lib/provenance");
+        out = { ...out, provenance: "onnx / synthetic data / untrained weights", prov: onnxProvenance(), synthetic: true, untrained: true, engineId: "onnx" };
         if (onStage) onStage("validating");
       } else {
         if (onStage) {
