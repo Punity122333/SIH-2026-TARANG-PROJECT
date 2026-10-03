@@ -172,28 +172,51 @@ export function MapView({ height = 420 }: { height?: number }) {
       [bounds.lonMax, bounds.latMin],
       [bounds.lonMin, bounds.latMin]
     ];
-    const ensure = () => {
-      if (!alive) return;
+    const paint = () => {
+      try {
+        map.triggerRepaint();
+      } catch {
+        void 0;
+      }
+    };
+    const ensure = async () => {
+      if (!alive) return false;
       tries++;
       try {
-        const src = map.getSource(FIELD_ID) as unknown as { updateImage?: (o: { image: string }) => void } | undefined;
+        const src = map.getSource(FIELD_ID) as unknown as { updateImage?: (o: { image: HTMLImageElement }) => void } | undefined;
         if (src && typeof src.updateImage === "function") {
-          src.updateImage({ image: raster.canvas.toDataURL() });
+          const img = new Image();
+          img.src = raster.canvas.toDataURL();
+          try {
+            await img.decode();
+          } catch {
+            void 0;
+          }
+          if (!alive) return false;
+          src.updateImage({ image: img });
+          paint();
           return true;
         }
         if (!src && map.isStyleLoaded()) {
           (map as unknown as { addSource: (id: string, src: unknown) => void }).addSource(FIELD_ID, { type: "image", url: raster.canvas.toDataURL(), coordinates: coords });
           (map as unknown as { addLayer: (l: unknown) => void }).addLayer({ id: FIELD_ID, type: "raster", source: FIELD_ID, paint: { "raster-opacity": 1, "raster-resampling": "linear" } });
+          paint();
           return true;
         }
-      } catch {
-        void 0;
+      } catch (e) {
+        try {
+          setMapError(String(e).slice(0, 160));
+        } catch {
+          void 0;
+        }
       }
       return false;
     };
-    if (loaded) ensure();
+    if (loaded) void ensure();
     const t = setInterval(() => {
-      if (ensure() || tries >= 8) clearInterval(t);
+      void ensure().then((ok) => {
+        if (ok || tries >= 8) clearInterval(t);
+      });
     }, 1500);
     return () => {
       alive = false;
