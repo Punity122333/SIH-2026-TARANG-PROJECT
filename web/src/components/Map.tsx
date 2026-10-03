@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSession } from "@/store/session";
 import { regionBounds } from "@/engine/demo/engine";
-import { tempColor } from "@/lib/theme";
+import { paintCell, adjacentToLand } from "@/lib/fieldPaint";
 export function MapView({ height = 420 }: { height?: number }) {
   const s = useSession();
   const nav = useNavigate();
@@ -95,19 +95,18 @@ export function MapView({ height = 420 }: { height?: number }) {
     const ctx = off.getContext("2d");
     if (!ctx) return null;
     const img = ctx.createImageData(w, h);
+    const land = result.surface.land;
     for (let r = 0; r < h; r++) {
       for (let c = 0; c < w; c++) {
         const v = field[r * w + c];
         const o = (r * w + c) * 4;
-        if (!Number.isFinite(v)) {
-          img.data[o + 3] = 0;
-          continue;
-        }
-        const [rr, gg, bb] = tempColor(v, tMin, tMax);
+        const isLand = land[r * w + c] === 1;
+        const near = !isLand && adjacentToLand(land, h, w, r, c);
+        const [rr, gg, bb, aa] = paintCell(v, isLand, near, tMin, tMax);
         img.data[o] = rr;
         img.data[o + 1] = gg;
         img.data[o + 2] = bb;
-        img.data[o + 3] = 235;
+        img.data[o + 3] = aa;
       }
     }
     ctx.putImageData(img, 0, 0);
