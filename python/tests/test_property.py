@@ -24,7 +24,7 @@ def test_argo_holdout_never_in_training_split():
 def test_metrics_invariant_to_ordering(vals):
     truth = list(vals)
     pred = [v + 0.5 for v in vals]
-    assert rmse(pred, truth) == rmse(list(reversed(pred)), list(reversed(truth)))
+    assert abs(rmse(pred, truth) - rmse(list(reversed(pred)), list(reversed(truth)))) < 1e-9
 
 
 @given(st.sampled_from(["bob", "arabian", "indian", "custom"]), st.sampled_from(["2024-01-15", "2024-07-15", "2025-01-15"]))
