@@ -11,6 +11,7 @@ export default defineConfig({
       registerType: "autoUpdate",
       workbox: {
         globPatterns: ["**/*.{js,css,html,woff,woff2,ttf,pmtiles,json,onnx}"],
+        globIgnores: ["**/tiles/**"],
         navigateFallback: "index.html",
         maximumFileSizeToCacheInBytes: 12000000,
         cleanupOutdatedCaches: true,
@@ -24,8 +25,7 @@ export default defineConfig({
           },
           {
             urlPattern: ({ url }) => url.pathname.indexOf("/tiles/") === 0,
-            handler: "CacheFirst",
-            options: { cacheName: "strata-tiles", expiration: { maxEntries: 8, maxAgeSeconds: 2592000 } }
+            handler: "NetworkOnly"
           },
           {
             urlPattern: ({ url }) => url.pathname.indexOf("/data/") === 0,

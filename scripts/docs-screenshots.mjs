@@ -11,8 +11,9 @@ async function settled(page) {
   await page.getByTestId("recon-panel").waitFor({ timeout: 30000 });
   await page.waitForFunction(() => {
     const plots = document.querySelectorAll(".plotly .main-svg").length;
-    const canvas = document.querySelector('[data-testid="map-view"] canvas[aria-hidden="true"]');
-    return plots >= 2 && canvas && canvas.width > 0;
+    const gl = document.querySelector('[data-testid="map-view"] .maplibregl-canvas');
+    const marks = document.querySelectorAll('[data-testid^="map-marker-"]').length;
+    return plots >= 2 && gl && marks > 0;
   }, { timeout: 60000 });
   await page.waitForFunction(() => {
     const el = document.querySelector('[data-testid="ocean-3d"] svg');

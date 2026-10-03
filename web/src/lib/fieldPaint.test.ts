@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { runDemoSync } from "@/engine/demo/engine";
 import type { EngineInput } from "@/engine/types";
-import { LAND_RGB, EDGE_BLEND, mix, adjacentToLand, paintCell } from "@/lib/fieldPaint";
+import { LAND_RGB, SHORE_RGB, EDGE_BLEND, SHORE_BLEND, mix, adjacentToLand, paintCell } from "@/lib/fieldPaint";
 function base(): EngineInput {
   return {
     region: "bob",
@@ -28,13 +28,15 @@ describe("field paint edges", () => {
     expect(c[3]).toBe(255);
     expect(c[0]).not.toBe(LAND_RGB[0]);
   });
-  it("edge ocean cells blend toward land fill", () => {
+  it("edge ocean cells blend toward land fill plus cyan shore tint", () => {
     const plain = paintCell(25.0, false, false, 20, 30);
     const edge = paintCell(25.0, false, true, 20, 30);
     expect(edge[3]).toBe(255);
     for (const k of [0, 1, 2]) {
-      expect(edge[k]).toBe(mix(plain[k], LAND_RGB[k], EDGE_BLEND));
+      expect(edge[k]).toBe(mix(mix(plain[k], LAND_RGB[k], EDGE_BLEND), SHORE_RGB[k], SHORE_BLEND));
     }
+    expect(edge).not.toEqual(plain);
+    expect(edge).not.toEqual([LAND_RGB[0], LAND_RGB[1], LAND_RGB[2], 255]);
   });
   it("adjacency detects four neighbours only", () => {
     const land = new Uint8Array([0, 0, 0, 0, 1, 0, 0, 0, 0]);
