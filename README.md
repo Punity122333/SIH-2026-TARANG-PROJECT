@@ -10,21 +10,22 @@ STRATA reconstructs 3D subsurface ocean temperature from 2D satellite observatio
 
 ## Project status
 
-> The app currently runs on deterministic synthetic demo data and untrained weights. Outputs are labeled DEMO / SIMULATED and are not scientific results. GLORYS12v2 training is future work.
+> The app currently runs on deterministic synthetic demo data and untrained weights. Labels are driven by actual provenance: a status chip in the top bar names the mode and source, the reconstruction panel carries one short provenance line, and metrics state their reference. Anything still synthetic is marked DEMO / SIMULATED and nothing here is a scientific result. GLORYS12v2 training is future work.
 
-All reconstruction panels carry a DEMO badge, provenance strings read `demo / synthetic data / untrained weights` or `remote / synthetic data / untrained weights`, and validation is against synthetic ARGO-like profiles until real training lands.
+Demo inputs are all synthetic and the model is untrained, so metrics read `vs synthetic truth` and the panel keeps a DEMO badge plus an untrained-model notice. Live mode replaces only SST with observed OSTIA data when server credentials are configured; SSS, SSH, currents, winds, and ARGO profiles stay synthetic until their adapters land, and outputs keep the untrained-model notice.
 
 ## Screenshots
 
-Captured with Playwright against the production build and local API.
+Captured with Playwright against the production build and local API at 1440 x 900 and device scale factor 2, Bay of Bengal, 2024-07-15, Demo mode. Regenerate with `node scripts/docs-screenshots.mjs`.
 
-![Dashboard with map and vertical profile](docs/images/dashboard.png)
-![Model explorer](docs/images/model.png)
-![Validation against held-out profiles](docs/images/validation.png)
-![Data explorer and cache](docs/images/data.png)
-![Impact and export](docs/images/impact.png)
+![Dashboard with map, metrics, profile, and T-S diagram](docs/images/dashboard.jpg)
+![3D ocean voxel view](docs/images/ocean3d.jpg)
+![Model explorer](docs/images/model.jpg)
+![Validation against ARGO-like profiles](docs/images/validation.jpg)
+![Data explorer and cache](docs/images/data.jpg)
+![Impact and export](docs/images/impact.jpg)
 
-The dashboard screenshot shows the reconstructed field map, depth slider, vertical profile with inverted depth axis and 15 markers, T-S diagram, and 3D view. Model, validation, data, and impact routes are shown in the remaining captures.
+The dashboard screenshot shows the reconstructed field map, depth slider, metrics with their reference, vertical profile with inverted depth axis and 15 markers, T-S diagram, and 3D view. Model, validation, data, and impact routes are shown in the remaining captures. The status chip and untrained-model notice are left visible in every shot.
 
 ## Features
 
@@ -126,7 +127,7 @@ Frontend uses the Vite proxy `/api` by default. Override with `VITE_STRATA_API_U
 
 ### Demo mode
 
-Demo mode works with no backend and no network. Pick Engine `Demo (browser)`, Data mode `Demo`, a region and date, then Run Reconstruction. All outputs are labeled DEMO / SIMULATED.
+Demo mode works with no backend and no network. Pick Engine `Demo (browser)`, Data mode `Demo`, a region and date, then Run Reconstruction. The top bar shows a `Demo · synthetic inputs` chip and the reconstruction panel keeps the DEMO badge with an untrained-model notice.
 
 ### Remote mode with backend
 
